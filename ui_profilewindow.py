@@ -224,7 +224,7 @@ class Ui_ProfileWindow(object):
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), ProfileWindow.openCameraWindow)
         QtCore.QObject.connect(self.pushButton_4, QtCore.SIGNAL(_fromUtf8("clicked()")), ProfileWindow.close)
         QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), ProfileWindow.openSetupDialog)
-        # QtCore.QObject.connect(self.pushButton_3, QtCore.SIGNAL(_fromUtf8("clicked()")), ProfileWindow.startProfile)
+        QtCore.QObject.connect(self.pushButton_3, QtCore.SIGNAL(_fromUtf8("clicked()")), ProfileWindow.startProfile)
         QtCore.QMetaObject.connectSlotsByName(ProfileWindow)
 
     def retranslateUi(self, ProfileWindow):

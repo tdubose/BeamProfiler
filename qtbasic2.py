@@ -8,6 +8,8 @@ from ui_setup import Ui_Setup
 from camerawidget import CameraWidget
 from cameradevice import CameraDevice
 from opencvqimage import OpenCVQImage
+import visa
+
 
 
 class MW(QtGui.QMainWindow):
@@ -18,7 +20,7 @@ class MW(QtGui.QMainWindow):
 		self.ui.setupUi(self)
 		self.show()
 		self.cameraDevice = _cameraDevice
-		# self.connect(self, QtCore.SIGNAL("updatePos"),self.updatePos)
+		#self.connect(self, QtCore.SIGNAL("updatePos"),self.updatePos)
 		self.profRange = (0.0,100.0)
 		
 	def openCameraWindow(self):
@@ -34,6 +36,15 @@ class MW(QtGui.QMainWindow):
 		self.profRange = newRange
 		print self.profRange
 		
+	def startProfile(self):
+		self.rm = visa.ResourceManager()
+		self.controller = self.rm.get_instrument("COM3")
+
+		self.controller.ask("P:R")
+		self.controller.ask("P:S")
+
+				
+				
 class SD(QtGui.QDialog):
 	
 	newRange = QtCore.pyqtSignal(tuple)
