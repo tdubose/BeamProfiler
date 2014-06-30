@@ -42,13 +42,13 @@ class CameraDevice(QtCore.QObject):
  
     @property
     def frameSize(self):
-        w = self._cameraDevice.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
-        h = self._cameraDevice.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)
+        w = self._cameraDevice.get(3) # 3 = width (DC 1394 properties, check https://github.com/Itseez/opencv/blob/0b4534d4c95556ba99878505130f12b32d588666/modules/highgui/include/opencv2/highgui.hpp)
+        h = self._cameraDevice.get(4) # 4 = height
         return int(w), int(h)
  
     @property
     def fps(self):
-        fps = int(self._cameraDevice.get(cv2.cv.CV_CAP_PROP_FPS))
+        fps = int(self._cameraDevice.get(5)) # 5 = FPS
         if not fps > 0:
             fps = self._DEFAULT_FPS
         return fps
