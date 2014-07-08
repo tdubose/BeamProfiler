@@ -33,6 +33,7 @@ class MW(QtGui.QMainWindow):
 		self.sd = SD(self.profRange)
 		self.sd.show()
 		self.sd.newRange.connect(self.updatePos)
+		#print self.cameraDevice.exposure()
 		
 	def updatePos(self, newRange):
 		self.profRange = newRange
@@ -69,7 +70,7 @@ class SD(QtGui.QDialog):
 		self.ui.lineEdit_2.setText(str(profRange[1]))
 		self.oldRange = profRange
 		print "Range of Start to Stop must be between 0.00 and 790.00"
-				
+		
 	def accept(self):
 		try:
 			newrange = (float(self.ui.lineEdit.text()),float(self.ui.lineEdit_2.text()))
