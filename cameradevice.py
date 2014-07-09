@@ -15,12 +15,12 @@ class CameraDevice(QtCore.QObject):
         self.mirrored = mirrored
  
         self._cameraDevice = cv2.VideoCapture(cameraId)
- 
         self._timer = QtCore.QTimer(self)
         self._timer.timeout.connect(self._queryFrame)
         self._timer.setInterval(1000/self.fps)
- 
+
         self.paused = False
+        self._cameraDevice.set(415, False)# 415 is Ximea auto exposure/gain control #this line does not work. Program wont run
  
     @QtCore.pyqtSlot()
     def _queryFrame(self):
@@ -30,10 +30,10 @@ class CameraDevice(QtCore.QObject):
         self.newFrame.emit(frame)
  
     @property
-    def paused(self):
+    def paused(self): # >> cameraDevice.paused -> True/False
         return not self._timer.isActive()
  
-    @paused.setter
+    @paused.setter # >> cameraDevice.paused = True/False
     def paused(self, p):
         if p:
             self._timer.stop()
@@ -45,10 +45,26 @@ class CameraDevice(QtCore.QObject):
         w = self._cameraDevice.get(3) # 3 = width (DC 1394 properties, check https://github.com/Itseez/opencv/blob/0b4534d4c95556ba99878505130f12b32d588666/modules/highgui/include/opencv2/highgui.hpp)
         h = self._cameraDevice.get(4) # 4 = height
         return int(w), int(h)
- 
+
     @property
     def fps(self):
         fps = int(self._cameraDevice.get(5)) # 5 = FPS
         if not fps > 0:
             fps = self._DEFAULT_FPS
         return fps
+		
+	@property
+	def exposure(self):
+		return self._cameraDevice.get(15)
+	
+	@property.setter
+	def exposure(self, expos):
+		self._cameraDevice.set(15, exposure)# 15 = exposure
+	
+	@property
+	def gain(self):
+		return self.cameraDevice.get(14)
+	
+	@property.setter
+	def gain(self, gains):
+		self._cameraDevice.set(14, gain)# 14 = gain	
