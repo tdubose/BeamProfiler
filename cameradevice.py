@@ -17,18 +17,29 @@ class CameraDevice(QtCore.QObject):
         self._cameraDevice = cv2.VideoCapture(cameraId)
         self._timer = QtCore.QTimer(self)
         self._timer.timeout.connect(self._queryFrame)
-        self._timer.setInterval(1000/self.fps)
-
+        self._timer.setInterval(1000/self.fps)    
+        
         self.paused = False
+        #print self._cameraDevice.get(15)
+        #print self._cameraDevice.get(14)
         self._cameraDevice.set(415, False)# 415 is Ximea auto exposure/gain control #this line does not work. Program wont run
- 
+        
+    @property
+    def exposure(self):
+        return self._cameraDevice.get(15)
+        
+    @exposure.setter
+    def exposure(self,x):
+        self._cameraDevice.set(15,x)
+
     @QtCore.pyqtSlot()
     def _queryFrame(self):
         frame = self._cameraDevice.read()[1]
+        
         if self.mirrored:
             frame = cv2.flip(frame,1)
         self.newFrame.emit(frame)
- 
+
     @property
     def paused(self): # >> cameraDevice.paused -> True/False
         return not self._timer.isActive()
@@ -52,19 +63,11 @@ class CameraDevice(QtCore.QObject):
         if not fps > 0:
             fps = self._DEFAULT_FPS
         return fps
-		
-	@property
-	def exposure(self):
-		return self._cameraDevice.get(15)
-	
-	@property.setter
-	def exposure(self, expos):
-		self._cameraDevice.set(15, exposure)# 15 = exposure
-	
-	@property
-	def gain(self):
-		return self.cameraDevice.get(14)
-	
-	@property.setter
-	def gain(self, gains):
-		self._cameraDevice.set(14, gain)# 14 = gain	
+    
+    @property
+    def gain(self):
+        return self._cameraDevice.get(14)
+    
+    @gain.setter
+    def gain(self, gain):
+        self._cameraDevice.set(14, gain)# 14 = gain    

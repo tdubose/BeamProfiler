@@ -21,7 +21,6 @@ class MW(QtGui.QMainWindow):
 		self.ui.setupUi(self)
 		self.show()
 		self.cameraDevice = _cameraDevice
-		#self.connect(self, QtCore.SIGNAL("updatePos"),self.updatePos)#this was uncommented
 		self.profRange = (0.0,100.0)
 		self.controller = Shot202("COM3")
 		
@@ -30,14 +29,27 @@ class MW(QtGui.QMainWindow):
 		self.cw.show()
 		
 	def openSetupDialog(self):
-		self.sd = SD(self.profRange)
+		self.sd = SD(self.profRange, self.cameraDevice.exposure, self.cameraDevice.gain)
 		self.sd.show()
 		self.sd.newRange.connect(self.updatePos)
-		#print self.cameraDevice.exposure()
+		self.sd.newExposure.connect(self.updateExposure)
+		self.sd.newGain.connect(self.updateGain)
 		
 	def updatePos(self, newRange):
 		self.profRange = newRange
 		print self.profRange
+	
+	def updateExposure(self, newExposure):
+		#print self.cameraDevice.fps
+		print self.cameraDevice.exposure
+		self.cameraDevice.exposure = float(newExposure)#float(newExposure))
+		print self.cameraDevice.exposure
+	
+	def updateGain(self, newGain):
+		print self.cameraDevice.fps
+		print self.cameraDevice.gain
+		self.cameraDevice.gain = float(newGain)
+		print self.cameraDevice.gain
 		
 	def startProfile(self):
 		self.profRangeStart_Pulse = int(self.profRange[0]*100)
@@ -61,26 +73,41 @@ class MW(QtGui.QMainWindow):
 class SD(QtGui.QDialog):
 	
 	newRange = QtCore.pyqtSignal(tuple)
+	newExposure = QtCore.pyqtSignal(int)
+	newGain = QtCore.pyqtSignal(int)
 	
-	def __init__(self,profRange): 
+	def __init__(self,profRange, exposure, gain):
 		super(SD, self).__init__()
 		self.ui = Ui_Setup()
 		self.ui.setupUi(self)
+		
+		# Set controls equal to extant values
 		self.ui.lineEdit.setText(str(profRange[0]))
 		self.ui.lineEdit_2.setText(str(profRange[1]))
 		self.oldRange = profRange
-		print "Range of Start to Stop must be between 0.00 and 790.00"
 		
-	def accept(self):
+		self.ui.horizontalSlider.setValue(exposure)
+		self.oldExposure = exposure
+		self.ui.horizontalSlider_2.setValue(gain)
+		self.oldGain = gain
+		#Range of Start to Stop must be between 0.00 and 790.00"
+		
+	def accept(self):   
 		try:
 			newrange = (float(self.ui.lineEdit.text()),float(self.ui.lineEdit_2.text()))
+			newexposure = (self.ui.horizontalSlider.value())
+			newgain = (self.ui.horizontalSlider_2.value())
 		except Exception, e:
 			raise e
 			newrange = self.oldRange
+			newexposure = self.oldExposure
+			newgain = self.oldGain
 		finally:
 			self.newRange.emit(newrange)
+			self.newExposure.emit(newexposure)
+			self.newGain.emit(newgain)
 			self.close()
-		
+
 def main():	
 	app = QtGui.QApplication(sys.argv)
 	cameraDevice = CameraDevice(mirrored = True)
