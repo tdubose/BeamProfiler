@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'setup.ui'
 #
-# Created: Thu Jul 10 10:05:59 2014
+# Created: Fri Jul 18 17:32:18 2014
 #      by: PyQt4 UI code generator 4.11
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,10 +32,6 @@ class Ui_Setup(object):
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
-        self.checkBox = QtGui.QCheckBox(Setup)
-        self.checkBox.setGeometry(QtCore.QRect(260, 49, 87, 31))
-        self.checkBox.setTristate(False)
-        self.checkBox.setObjectName(_fromUtf8("checkBox"))
         self.layoutWidget = QtGui.QWidget(Setup)
         self.layoutWidget.setGeometry(QtCore.QRect(20, 33, 182, 61))
         self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
@@ -55,7 +51,7 @@ class Ui_Setup(object):
         self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
         self.gridLayout.addWidget(self.lineEdit_2, 1, 1, 1, 1)
         self.gridLayoutWidget = QtGui.QWidget(Setup)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(20, 130, 311, 95))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(20, 120, 311, 95))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout_2 = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout_2.setMargin(0)
@@ -98,7 +94,6 @@ class Ui_Setup(object):
 
     def retranslateUi(self, Setup):
         Setup.setWindowTitle(_translate("Setup", "Dialog", None))
-        self.checkBox.setText(_translate("Setup", "Clocking", None))
         self.label_3.setText(_translate("Setup", "Start", None))
         self.label_2.setText(_translate("Setup", "Stop", None))
         self.label.setText(_translate("Setup", "Exposure", None))
