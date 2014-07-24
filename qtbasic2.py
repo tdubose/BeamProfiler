@@ -136,14 +136,14 @@ class MW(QtGui.QMainWindow):
 		#Getting the data
 		deltaZ = float(self.profRange[1] - self.profRange[0]) * 1000. #micrometers
 		#print deltaZ
-		w1 = float(x1Diamfwhm*5.5*2)
+		w1 = float(x1Diamfwhm*5.5*4)#Diameter
 		#print w1
-		w2 = float(x2Diamfwhm*5.5*2)
+		w2 = float(x2Diamfwhm*5.5*4)
 		#print w2
 		wavelength = .663#in  micrometers
-		y1 = float(y1Diamfwhm*5.5*2)
+		y1 = float(y1Diamfwhm*5.5*4)
 		#print y1
-		y2 = float(y2Diamfwhm*5.5*2)
+		y2 = float(y2Diamfwhm*5.5*4)
 		#print y2
 		
 		####################################### solution to 3rd position ambiguity(using only the major axis)
@@ -168,9 +168,12 @@ class MW(QtGui.QMainWindow):
 		self.fit3 = gaussfit(self.imgroi3.astype(float))
 		x3Diamfwhm = float((self.fit3[4]))#pixels, not fwhm
 		y3Diamfwhm = float((self.fit3[5]))#pixels, not fwhm
-		print "x3Diamfwhm: " + str(x3Diamfwhm)
-		print "x2Diamfwhm: " + str(x2Diamfwhm)
-		print "x1Diamfwhm: " + str(x1Diamfwhm)#compare 3rd image width to 1st image width, see if it's larger or not
+		# print "x3Diamfwhm: " + str(x3Diamfwhm)
+		# print "x2Diamfwhm: " + str(x2Diamfwhm)
+		# print "x1Diamfwhm: " + str(x1Diamfwhm)#compare 3rd image width to 1st image width, see if it's larger or not
+		# print "y3Diamfwhm: " + str(y3Diamfwhm)
+		# print "y2Diamfwhm: " + str(y2Diamfwhm)
+		# print "y1Diamfwhm: " + str(y1Diamfwhm)
 		######################################
 		if x3Diamfwhm > x1Diamfwhm:
 			majorAxisParamaters = beamParam(deltaZ, w1, w2, wavelength)
@@ -184,8 +187,8 @@ class MW(QtGui.QMainWindow):
 		majorAxisParamaters = beamParam(deltaZ, w1, w2, wavelength)
 		minorAxisParamaters = beamParam(deltaZ, y1, y2, wavelength)
 		
-		majorAngle = wavelength/((math.pi)*0.5*float(majorAxisParamaters[2]))
-		minorAngle = wavelength/((math.pi)*0.5*float(minorAxisParamaters[2]))
+		majorAngle = ((wavelength/((math.pi)*0.5*float(majorAxisParamaters[2])))*0.0174532925*1000.)
+		minorAngle = ((wavelength/((math.pi)*0.5*float(minorAxisParamaters[2])))*0.0174532925*1000.)
 		
 		print majorAxisParamaters#a list of z1, z0, w0
 		print minorAxisParamaters
